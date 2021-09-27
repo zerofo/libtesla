@@ -322,7 +322,7 @@ namespace tsl {
             /**
              * @brief Tesla config file
              */
-            static const char* CONFIG_FILE = "/config/tesla/config.ini";
+            static const char* CONFIG_FILE = "/switch/config/tesla/config.ini";
 
             /**
              * @brief Parses a ini string
@@ -386,6 +386,7 @@ namespace tsl {
                 /* Open config file. */
                 FsFile fileConfig;
                 if (R_FAILED(fsFsOpenFile(&fsSdmc, CONFIG_FILE, FsOpenMode_Read, &fileConfig)))
+                    if (R_FAILED(fsFsOpenFile(&fsSdmc, "/config/tesla/config.ini", FsOpenMode_Read, &fileConfig)))
                     return {};
                 hlp::ScopeGuard fileGuard([&] { fsFileClose(&fileConfig); });
 
@@ -419,7 +420,8 @@ namespace tsl {
                 /* Open config file. */
                 FsFile fileConfig;
                 if (R_FAILED(fsFsOpenFile(&fsSdmc, CONFIG_FILE, FsOpenMode_Write, &fileConfig)))
-                    return;
+                    if (R_FAILED(fsFsOpenFile(&fsSdmc, "/config/tesla/config.ini", FsOpenMode_Write, &fileConfig)))
+                        return;
                 hlp::ScopeGuard fileGuard([&] { fsFileClose(&fileConfig); });
 
                 std::string iniString = unparseIni(iniData);
