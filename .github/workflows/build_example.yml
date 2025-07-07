@@ -1,5 +1,10 @@
-name: build
-on: [push, pull_request]
+name: ci
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -11,4 +16,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: Build
-      run: cd example && make -j2
+      run: |
+        cd example && make -j2
+        ls
+      
